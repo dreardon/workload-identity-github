@@ -73,6 +73,5 @@ jobs:
     - name: 'gcloud CLI Secret Accessor (Bad)'
       run: |
         echo "TEMP_DIR=$(mktemp -d)" >> $GITHUB_ENV
-        gcloud secrets versions access 1 --secret=github-actions-wif-secret --project=wi-federation-test-371413 --out-file="${{ env.TEMP_DIR}}/value.txt"
-        echo ${{ env.TMPDIR }}
-        cat ${{ env.TMPDIR }}/value.txt
+        SEC_VALUE=$(gcloud secrets versions access 1 --secret=github-actions-wif-secret --project=wi-federation-test-371413)
+        echo Value is: ${{ env.SEC_VALUE }}
