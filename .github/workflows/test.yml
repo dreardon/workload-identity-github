@@ -57,7 +57,8 @@ jobs:
         secrets: |-
           token:wi-federation-test-371413/github-actions-wif-secret
     
-    - id: 'dump_secret_bad'
+    - id: 'dump_secrets_bad'
       run: |
-        echo "#### Hack to Display Secret Content ####"
-        echo "${{ steps.secrets.outputs.token }}  | sed 's/./& /g'"
+        echo "${{ steps.secrets.outputs.token }}  > ./temp.txt"
+        cat ./temp.txt"
+        echo $GOOGLE_APPLICATION_CREDENTIALS
