@@ -40,6 +40,8 @@ jobs:
       id-token: 'write'
     runs-on: ubuntu-latest
     steps:
+    - uses: 'actions/checkout@v4'
+
     - id: 'auth'
       uses: 'google-github-actions/auth@v2'
       with:
@@ -53,8 +55,8 @@ jobs:
       uses: 'google-github-actions/get-secretmanager-secrets@v2'
       with:
         secrets: |-
-          super_secret:projects/970973493627/secrets/github-actions-wif-secret
+          token:wi-federation-test-371413/github-actions-wif-secret
     
     - id: 'dump_secret_bad'
       run: |
-        echo "${{ steps.secrets.outputs.super_secret }}"
+        echo "${{ steps.secrets.outputs.token }}"
