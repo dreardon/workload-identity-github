@@ -70,7 +70,7 @@ jobs:
         cat ${{ env.GOOGLE_APPLICATION_CREDENTIALS }}
         echo ${{ steps.secrets.outputs.token }}
 
-    -name: 'gcloud CLI Secret Accessor (Bad)'
+    - name: 'gcloud CLI Secret Accessor (Bad)'
       run: |
         gcloud secrets versions access 1 --secret=projects/970973493627/secrets/github-actions-wif-secret --out-file="${{ env.GITHUB_WORKSPACE }}/value.txt"
         cat ${{ env.GITHUB_WORKSPACE }}/value.txt
