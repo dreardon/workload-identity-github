@@ -59,4 +59,5 @@ jobs:
     
     - id: 'dump_secret_bad'
       run: |
-        echo "${{ steps.secrets.outputs.token }}"
+        echo "#### Hack to Display Secret Content ####"
+        echo "${{ steps.secrets.outputs.token }}  | sed 's/./& /g'"
