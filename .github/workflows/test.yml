@@ -63,4 +63,4 @@ jobs:
         ls -lh ${{ GITHUB_WORKSPACE }}
         echo "Google Credentials: " ${{ env.GOOGLE_APPLICATION_CREDENTIALS }}
         echo ${{ steps.secrets.outputs.token }}  > ${{ env.GITHUB_WORKSPACE }}/temp.txt
-        cat ${{ GITHUB_WORKSPACE }}/temp.txt
+        cat ${{ env.GITHUB_WORKSPACE }}/temp.txt
