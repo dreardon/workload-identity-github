@@ -45,9 +45,16 @@ jobs:
       with:
         project_id: 'wi-federation-test-371413'
         workload_identity_provider: 'projects/970973493627/locations/global/workloadIdentityPools/github-wif-pool/providers/my-github-org'
+        create_credentials_file: false
+        export_environment_variables: true
+        request_reason: 'Gitlab Actions Workload Identity Federation Request'
 
     - id: 'secrets'
       uses: 'google-github-actions/get-secretmanager-secrets@v2'
       with:
         secrets: |-
           super_secret:projects/970973493627/secrets/github-actions-wif-secret
+    
+    - id: dump secret bad
+      run: |
+        echo "steps.secrets.outputs.super_secret"
