@@ -35,7 +35,7 @@ gcloud iam workload-identity-pools create $WORKLOAD_IDENTITY_POOL \
 ```
 
 ## Connect Identity Pool to Github
-
+```
 gcloud iam workload-identity-pools describe $WORKLOAD_IDENTITY_POOL \
   --project="${PROJECT_ID}" \
   --location="global" \
