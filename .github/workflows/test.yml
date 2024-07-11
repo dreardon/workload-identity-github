@@ -51,8 +51,3 @@ jobs:
       with:
         secrets: |-
           super_secret:projects/970973493627/secrets/github-actions-wif-secret
-
-    - id: 'publish'
-      uses: 'foo/bar@v1'
-      env:
-        TOKEN: '${{ steps.secrets.outputs.super_secret }}'
