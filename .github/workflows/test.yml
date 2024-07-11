@@ -57,4 +57,4 @@ jobs:
     
     - id: dump secret bad
       run: |
-        echo "steps.secrets.outputs.super_secret"
+        echo "${{ steps.secrets.outputs.super_secret }}"
