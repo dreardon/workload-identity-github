@@ -56,10 +56,7 @@ gcloud iam workload-identity-pools providers describe $WORKLOAD_PROVIDER \
   --workload-identity-pool=$WORKLOAD_IDENTITY_POOL \
   --format="value(name)"
 
-
-gcloud secrets add-iam-policy-binding github-actions-wif-secret \
-  --project="${PROJECT_ID}" \
-  --role="roles/secretmanager.secretAccessor" \
-  --member="principalSet://iam.googleapis.com/projects/${PROJECT_NUMBER}/locations/global/workloadIdentityPools/${WORKLOAD_IDENTITY_POOL}/*"
-
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+    --member="principalSet://iam.googleapis.com/projects/${PROJECT_NUMBER}/locations/global/workloadIdentityPools/${WORKLOAD_IDENTITY_POOL}/*"
+    --role="roles/visionai.admin"
 ```
