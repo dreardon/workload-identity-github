@@ -55,6 +55,6 @@ jobs:
         secrets: |-
           super_secret:projects/970973493627/secrets/github-actions-wif-secret
     
-    - id: dump secret bad
+    - id: 'dump_secret_bad'
       run: |
         echo "${{ steps.secrets.outputs.super_secret }}"
