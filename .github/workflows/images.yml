@@ -6,6 +6,12 @@ on:
       - 'main'
       - 'release/**/*'
 
+env:
+  WORKLOAD_IDENTITY_POOL: ${{ vars.WORKLOAD_IDENTITY_POOL }}
+  WORKLOAD_IDENTITY_PROVIDER: ${{ vars.WORKLOAD_IDENTITY_PROVIDER }}
+  WORKLOAD_IDENTITY_POOL_PROJECT_NUMBER: ${{ vars.WORKLOAD_IDENTITY_POOL_PROJECT_NUMBER }}
+  PROJECT_ID: ${{ vars.PROJECT_ID }}
+
 permissions:
   id-token: write 
   contents: read
@@ -22,8 +28,8 @@ jobs:
         id: auth
         uses: google-github-actions/auth@v2
         with:
-            project_id: 'wi-federation-test-371413'
-            workload_identity_provider: 'projects/970973493627/locations/global/workloadIdentityPools/github-wif-pool/providers/my-github-org'
+            project_id: ${{ vars.PROJECT_ID }}
+            workload_identity_provider: 'projects/${{ vars.WORKLOAD_IDENTITY_POOL_PROJECT_NUMBER }}/locations/global/workloadIdentityPools/${{ vars.WORKLOAD_IDENTITY_POOL }}/providers/${{ vars.WORKLOAD_IDENTITY_PROVIDER }}'
 
       - name: Install gcloud CLI
         uses: google-github-actions/setup-gcloud@v2

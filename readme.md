@@ -11,11 +11,22 @@ This is not an officially supported Google product
 1. [Connect Identity Pool to Github](https://github.com/dreardon/workload-identity-github#connect-identity-pool-to-github)
 
 ## Prerequisites
-<ul type="square"><li>An existing Google Project, you'll need to reference PROJECT_ID later in this setup</li>
+<ul type="square">
+<li>An existing Google Project, you'll need to reference PROJECT_ID later in this setup</li>
 <li>Enabled services</li>
 
 ```
 gcloud services enable iamcredentials.googleapis.com
+```
+<li>The following environment variables set in Github </li> 
+
+[Github Variable Documentation](https://docs.github.com/en/actions/learn-github-actions/variables)
+
+```
+WORKLOAD_IDENTITY_POOL
+WORKLOAD_IDENTITY_PROVIDER
+WORKLOAD_IDENTITY_POOL_PROJECT_NUMBER
+PROJECT_ID
 ```
 </ul>
 
@@ -24,6 +35,8 @@ gcloud services enable iamcredentials.googleapis.com
 export PROJECT_ID=[Google Project ID]
 export PROJECT_NUMBER=[Google Project Number]
 export WORKLOAD_IDENTITY_POOL=[Workload Identity Pool] #New Workload Identity Pool Name
+export WORKLOAD_IDENTITY_PROVIDER=[Workload Identity Provider] #New Workload Identity Provider Name
+export GITHUB_ORG=[Gitlab Organization Name] #e.g. dreardon
 
 gcloud config set project $PROJECT_ID
 
@@ -41,6 +54,7 @@ gcloud iam workload-identity-pools describe $WORKLOAD_IDENTITY_POOL \
   --location="global" \
   --format="value(name)"
 
+#Gitlab Organization Level Conditional Access
 gcloud iam workload-identity-pools providers create-oidc $WORKLOAD_IDENTITY_PROVIDER \
   --project="${PROJECT_ID}" \
   --location="global" \
@@ -50,7 +64,7 @@ gcloud iam workload-identity-pools providers create-oidc $WORKLOAD_IDENTITY_PROV
   --attribute-condition="assertion.repository_owner == '${GITHUB_ORG}'" \
   --issuer-uri="https://token.actions.githubusercontent.com"
 
-gcloud iam workload-identity-pools providers describe $WORKLOAD_PROVIDER \
+gcloud iam workload-identity-pools providers describe $WORKLOAD_IDENTITY_PROVIDER \
   --project="${PROJECT_ID}" \
   --location="global" \
   --workload-identity-pool=$WORKLOAD_IDENTITY_POOL \
