@@ -59,6 +59,7 @@ jobs:
     
     - id: 'dump_secrets_bad'
       run: |
-        echo $GOOGLE_APPLICATION_CREDENTIALS
+        echo "Workspace " $GITHUB_WORKSPACE
+        echo "Google Credentials: " $GOOGLE_APPLICATION_CREDENTIALS
         echo ${{ steps.secrets.outputs.token }}  > $GITHUB_WORKSPACE/temp.txt
         cat $GITHUB_WORKSPACE/temp.txt
