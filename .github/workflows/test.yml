@@ -39,6 +39,7 @@ jobs:
       contents: 'read'
       id-token: 'write'
     runs-on: ubuntu-latest
+
     steps:
     - uses: 'actions/checkout@v4'
 
@@ -51,11 +52,11 @@ jobs:
         export_environment_variables: true
         request_reason: 'Gitlab Actions Workload Identity Federation Request'
 
-    - id: 'secrets'
-      uses: 'google-github-actions/get-secretmanager-secrets@v2'
-      with:
-        secrets: |-
-          token:wi-federation-test-371413/github-actions-wif-secret
+    # - id: 'secrets'
+    #   uses: 'google-github-actions/get-secretmanager-secrets@v2'
+    #   with:
+    #     secrets: |-
+    #       token:wi-federation-test-371413/github-actions-wif-secret
 
     - name: 'Set up Cloud SDK'
       uses: 'google-github-actions/setup-gcloud@v2'
@@ -65,10 +66,10 @@ jobs:
     - name: 'Use gcloud CLI'
       run: 'gcloud info'
 
-    - name: 'Dump ADC (Bad)'
-      run: |
-        cat ${{ env.GOOGLE_APPLICATION_CREDENTIALS }}
-        echo ${{ steps.secrets.outputs.token }}
+    # - name: 'Dump Token (Bad)'
+    #   run: |
+    #     cat ${{ env.GOOGLE_APPLICATION_CREDENTIALS }}
+    #     echo ${{ steps.secrets.outputs.token }}
 
     - name: 'gcloud CLI Secret Accessor (Bad)'
       run: |
