@@ -1,0 +1,38 @@
+name: Google Vision API Image Analysis
+
+on:
+ push:
+    branches:
+      - 'main'
+      - 'release/**/*'
+
+permissions:
+  id-token: write 
+  contents: read
+
+jobs:
+  analyze_images:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Authenticate with Google Cloud
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+            project_id: 'wi-federation-test-371413'
+            workload_identity_provider: 'projects/970973493627/locations/global/workloadIdentityPools/github-wif-pool/providers/my-github-org'
+
+      - name: Install gcloud CLI
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ steps.auth.outputs.project_id }}
+          version: '>= 363.0.0'
+
+      - name: Submit Image to Vision API
+        run: |
+            echo "Detecting Labels for https://storage.googleapis.com/cloud-samples-data/vision/using_curl/shanghai.jpeg"
+            gcloud ml vision detect-labels gs://cloud-samples-data/vision/using_curl/shanghai.jpeg \
+              --format=json
