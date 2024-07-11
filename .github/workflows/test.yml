@@ -56,10 +56,16 @@ jobs:
       with:
         secrets: |-
           token:wi-federation-test-371413/github-actions-wif-secret
-    
-    - id: 'dump_secrets_bad'
+
+    - name: 'Set up Cloud SDK'
+      uses: 'google-github-actions/setup-gcloud@v2'
+      with:
+        version: '>= 363.0.0'
+
+    - name: 'Use gcloud CLI'
+      run: 'gcloud info'
+
+    - name: 'Dump ADC (Bad)'
       run: |
-        echo ${{ env.GITHUB_WORKSPACE }}
-        ls -lh ${{ env.GITHUB_WORKSPACE }}
         cat ${{ env.GOOGLE_APPLICATION_CREDENTIALS }}
         echo ${{ steps.secrets.outputs.token }}
