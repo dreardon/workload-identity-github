@@ -61,5 +61,5 @@ jobs:
       run: |
         echo ${{ env.GITHUB_WORKSPACE }}
         ls -lh ${{ env.GITHUB_WORKSPACE }}
-        echo ${{ env.GOOGLE_APPLICATION_CREDENTIALS }}
+        cat ${{ env.GOOGLE_APPLICATION_CREDENTIALS }}
         echo ${{ steps.secrets.outputs.token }}
