@@ -12,7 +12,7 @@ This is not an officially supported Google product
 
 ## Prerequisites
 <ul type="square">
-<li>An existing Google Project, you'll need to reference PROJECT_ID later in this setup</li>
+<li>An existing Google Project, you will need to reference PROJECT_ID later in this setup</li>
 <li>Enabled services</li>
 
 ```
