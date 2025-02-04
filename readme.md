@@ -3,7 +3,7 @@
 This is the Github Actions portion of a multi project set of examples for configuring Google Cloud Workload Identity Federation. For further information on this set-up please refer to Google's documentation here: https://cloud.google.com/iam/docs/workload-identity-federation-with-deployment-pipelines#github-actions
 
 ## Google Disclaimer
-This is not an officially supported Google product
+This isn't an officially supported Google product
 
 ## Table of Contents
 1. [Prerequisites](https://github.com/dreardon/workload-identity-github#prerequisites)
