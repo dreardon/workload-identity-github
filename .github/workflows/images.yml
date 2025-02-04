@@ -30,7 +30,6 @@ jobs:
         with:
             project_id: ${{ vars.PROJECT_ID }}
             workload_identity_provider: 'projects/${{ vars.WORKLOAD_IDENTITY_POOL_PROJECT_NUMBER }}/locations/global/workloadIdentityPools/${{ vars.WORKLOAD_IDENTITY_POOL }}/providers/${{ vars.WORKLOAD_IDENTITY_PROVIDER }}'
-            service_account: '970973493627-compute@developer.gserviceaccount.com'
 
       - name: Install gcloud CLI
         uses: google-github-actions/setup-gcloud@v2
