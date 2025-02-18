@@ -31,7 +31,5 @@ authenticate:
       EOF
       cat $GOOGLE_APPLICATION_CREDENTIALS
       gcloud auth login --cred-file=$CI_BUILDS_DIR/.workload_identity.wlconfig
-      gcloud config set project wi-federation-test-371413
-      curl "https://oauth2.googleapis.com/tokeninfo?access_token=$(gcloud auth print-access-token)"
       echo "Detecting Labels for https://storage.googleapis.com/cloud-samples-data/vision/using_curl/shanghai.jpeg"
       gcloud ml vision detect-labels gs://cloud-samples-data/vision/using_curl/shanghai.jpeg --format=json
