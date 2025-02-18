@@ -1,42 +1,37 @@
 default:
   image: google/cloud-sdk:alpine
 
-job:
+stages:
+  - authenticate
+
+authenticate:
+  stage: authenticate
   variables:
     WORKLOAD_IDENTITY_PROJECT_NUMBER: 970973493627
     WORKLOAD_IDENTITY_POOL: gitlab-wif-pool
     WORKLOAD_IDENTITY_PROVIDER: gitlab-wif-provider
+    SERVICE_ACCOUNT: gitlab-sa@wi-federation-test-371413.iam.gserviceaccount.com
     GOOGLE_APPLICATION_CREDENTIALS: $CI_BUILDS_DIR/.workload_identity.wlconfig
-
   id_tokens:
     WORKLOAD_IDENTITY_TOKEN:
       aud: https://iam.googleapis.com/projects/970973493627/locations/global/workloadIdentityPools/gitlab-wif-pool/providers/gitlab-wif-provider
-
-  stages:
-    - authenticate
-    - detect_labels
-
-  authenticate:
-    stage: authenticate
-    script:
-      - |-
-        echo $WORKLOAD_IDENTITY_TOKEN > $CI_BUILDS_DIR/.workload_identity.jwt
-        cat << EOF > $GOOGLE_APPLICATION_CREDENTIALS
-        {
-          "type": "external_account",
-          "audience": "//iam.googleapis.com/projects/$WORKLOAD_IDENTITY_PROJECT_NUMBER/locations/global/workloadIdentityPools/$WORKLOAD_IDENTITY_POOL/providers/$WORKLOAD_IDENTITY_PROVIDER",
-          "subject_token_type": "urn:ietf:params:oauth:token-type:jwt",
-          "token_url": "https://sts.googleapis.com/v1/token",
-          "credential_source": {
-            "file": "$CI_BUILDS_DIR/.workload_identity.jwt"
-          }
+  script:
+    - |-
+      echo $WORKLOAD_IDENTITY_TOKEN > $CI_BUILDS_DIR/.workload_identity.jwt
+      cat << EOF > $GOOGLE_APPLICATION_CREDENTIALS
+      {
+        "type": "external_account",
+        "audience": "//iam.googleapis.com/projects/$WORKLOAD_IDENTITY_PROJECT_NUMBER/locations/global/workloadIdentityPools/$WORKLOAD_IDENTITY_POOL/providers/$WORKLOAD_IDENTITY_PROVIDER",
+        "subject_token_type": "urn:ietf:params:oauth:token-type:jwt",
+        "token_url": "https://sts.googleapis.com/v1/token",
+        "credential_source": {
+          "file": "$CI_BUILDS_DIR/.workload_identity.jwt"
         }
-        EOF
-
-  detect_labels:
-    stage: detect_labels
-    script:
-      - echo "Detecting Labels for https://storage.googleapis.com/cloud-samples-data/vision/using_curl/shanghai.jpeg"
-      - gcloud ml vision detect-labels gs://cloud-samples-data/vision/using_curl/shanghai.jpeg --format=json
-    dependencies:
-      - authenticate
+      }
+      EOF
+      cat $GOOGLE_APPLICATION_CREDENTIALS
+      gcloud auth login --cred-file=$CI_BUILDS_DIR/.workload_identity.wlconfig
+      gcloud config set project wi-federation-test-371413
+      curl "https://oauth2.googleapis.com/tokeninfo?access_token=$(gcloud auth print-access-token)"
+      echo "Detecting Labels for https://storage.googleapis.com/cloud-samples-data/vision/using_curl/shanghai.jpeg"
+      gcloud ml vision detect-labels gs://cloud-samples-data/vision/using_curl/shanghai.jpeg --format=json
