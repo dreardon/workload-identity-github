@@ -1,0 +1,27 @@
+default:
+  image: google/cloud-sdk:alpine
+job:
+  variables:
+    WORKLOAD_IDENTITY_PROJECT_NUMBER: 970973493627
+    WORKLOAD_IDENTITY_POOL: gitlab-wif-pool
+    WORKLOAD_IDENTITY_PROVIDER: gitlab-wif-provider
+    GOOGLE_APPLICATION_CREDENTIALS: $CI_BUILDS_DIR/.workload_identity.wlconfig
+
+  id_tokens:
+    WORKLOAD_IDENTITY_TOKEN:
+      aud: https://iam.googleapis.com/projects/970973493627/locations/global/workloadIdentityPools/gitlab-wif-pool/providers/gitlab-wif-provider
+
+  script:
+    - |-
+      echo $WORKLOAD_IDENTITY_TOKEN > $CI_BUILDS_DIR/.workload_identity.jwt
+      cat << EOF > $GOOGLE_APPLICATION_CREDENTIALS
+      {
+        "type": "external_account",
+        "audience": "//iam.googleapis.com/projects/$WORKLOAD_IDENTITY_PROJECT_NUMBER/locations/global/workloadIdentityPools/$WORKLOAD_IDENTITY_POOL/providers/$WORKLOAD_IDENTITY_PROVIDER",
+        "subject_token_type": "urn:ietf:params:oauth:token-type:jwt",
+        "token_url": "https://sts.googleapis.com/v1/token",
+        "credential_source": {
+          "file": "$CI_BUILDS_DIR/.workload_identity.jwt"
+        }
+      }
+      EOF
